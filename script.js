@@ -4,12 +4,10 @@ const cv=document.getElementById('c'),ctx=cv.getContext('2d');
 const FONT='"IBM Plex Sans",system-ui,sans-serif';
 let S=1,T={};
 
-// 3D Model / Sprite Şəkillərinin Yüklənməsi
 const robotImg = new Image();
-robotImg.src = 'robot3d.png'; // 3D Robot şəkliniz (şəffaf fon .png)
-
+robotImg.src = 'robot3d.png';
 const dummyImg = new Image();
-dummyImg.src = 'dummy3d.png'; // 3D Pasyent/İnsan şəkliniz
+dummyImg.src = 'dummy3d.png'; 
 
 function readTheme(){const cs=getComputedStyle(document.documentElement);['bg','ink','muted','grid','grid2','panel','line','accent','neutral','screen','warn'].forEach(k=>T[k]=cs.getPropertyValue('--'+k).trim())}
 function resize(){const r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;cv.width=Math.round(r.width*d);cv.height=Math.round(r.width*H/W*d);S=cv.width/W}
@@ -54,12 +52,10 @@ DOCS.forEach(d=>{d.flash=Math.max(0,d.flash-dt*1.4)});
 }
 let served=0;
 
-// 3D Pasyent Şəkli (Sprite) Çizim Funksiyası
 function dummy(x, y, ang, col, a){
 ctx.save();
 ctx.translate(x, y);
 
-// Kölgə ölçüsü də böyüdüldü
 ctx.globalAlpha = a * 0.25;
 ctx.fillStyle = '#000000';
 ctx.beginPath();
@@ -70,7 +66,6 @@ ctx.rotate(ang);
 ctx.globalAlpha = a;
 
 if(dummyImg.complete && dummyImg.naturalWidth !== 0) {
-    // Şəklin ölçüləri böyüdüldü (Əvvəlki: -16, -20, 32, 40 idi -> İndi daha böyükdür)
     ctx.drawImage(dummyImg, -30, -25, 60, 60);
 } else {
     // Ehtiyat həndəsi fiqur ölçüsü
@@ -107,7 +102,6 @@ function drawRoute(){if(!route)return;const a=1-(t-route.t)/1.1;if(a<=0){route=n
 const d=route.d;ctx.save();ctx.globalAlpha=a;ctx.strokeStyle=d.c;ctx.lineWidth=3;ctx.setLineDash([8,7]);
 ctx.lineDashOffset=-t*60;ctx.beginPath();ctx.moveTo(CX,350);ctx.lineTo(d.cx,350);ctx.lineTo(d.cx,106);ctx.stroke();ctx.restore()}
 
-// 3D Robot Şəkli (Sprite) Çizim Funksiyası
 function drawRobot(){
 const cx=CX,cy=TY;
 const scanning=serving&&mode==='ai';
@@ -116,7 +110,6 @@ ctx.save();
 if(robotImg.complete && robotImg.naturalWidth !== 0) {
     ctx.drawImage(robotImg, cx - 46, cy - 50, 90, 100);
 } else {
-    // Ehtiyat həndəsi robot dizaynı
     ctx.beginPath();
     ctx.roundRect(cx - 25, cy - 35, 50, 70, 10);
     ctx.fillStyle = '#ffffff';
@@ -126,7 +119,6 @@ if(robotImg.complete && robotImg.naturalWidth !== 0) {
     ctx.stroke();
 }
 
-// Skanetmə şüası effekti (Şəklin üzərinə əlavə olaraq işləyir)
 if(scanning){
 const k=serveT/serveDur,y1=cy+10,y2=SPOT_Y-12;
 ctx.beginPath();ctx.moveTo(cx-6,y1);ctx.lineTo(cx+6,y1);ctx.lineTo(cx+18,y2);ctx.lineTo(cx-18,y2);ctx.closePath();
@@ -153,19 +145,16 @@ txt(text,x+11,y,13,T.ink,500,'left')}
 function draw(){ctx.setTransform(S,0,0,S,0,0);ctx.clearRect(0,0,W,H);ctx.fillStyle=T.bg;ctx.fillRect(0,0,W,H);
 drawGrid();drawDocs();drawRoute();
 if(mode==='ai')drawRobot();else drawDesk();
-// bubble
 let msg=null,col=mode==='ai'?T.accent:T.warn;
 if(serving)msg=mode==='ai'?'Skan edilir…':'Şikayət dinlənilir…';
 else if(lastMsg&&t-lastMsg.t<1.6){msg=lastMsg.text;col=lastMsg.mode==='ai'?T.accent:T.warn}
 if(msg)bubble(msg,CX+(mode==='ai'?52:90),TY-8,col);
 leaving.forEach(p=>dummy(p.x,p.y,p.ang,p.color,Math.max(0,p.alpha)));
 for(let i=queue.length-1;i>=0;i--){const p=queue[i];dummy(p.x,p.y,p.ang,T.neutral,1)}
-// entrance
 ctx.setLineDash([6,5]);ctx.strokeStyle=T.muted;ctx.lineWidth=1.5;ctx.beginPath();ctx.roundRect(CX-34,H-30,68,24,6);ctx.stroke();ctx.setLineDash([]);
 txt('Giriş',CX,H-18,12,T.muted,500);
 if(queue.length>=40)txt('Növbə doludur',CX,H-44,12,T.warn,600)}
 
-// UI
 const $=id=>document.getElementById(id);
 function fmt(s){return s.n?(s.sum/s.n).toFixed(1).replace('.',',')+' san':'—'}
 let uiLast=0;
