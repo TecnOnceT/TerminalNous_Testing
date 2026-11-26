@@ -1,7 +1,7 @@
 (function(){
 const W=720,H=640,CX=360,TY=290,SPOT_Y=372;
 const cv=document.getElementById('c'),ctx=cv.getContext('2d');
-const FONT='"IBM Plex Sans",system-ui,sans-serif';
+const FONT='"Comic Sans MS",system-ui,sans-serif';
 let S=1,T={};
 
 const robotImg = new Image();
