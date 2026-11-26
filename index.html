@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Poliklinika yönləndirmə simulyasiyası</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<h1>Poliklinika: ağıllı yönləndirmə simulyasiyası</h1>
+<p class="sub">Üstdən görünüş. Hər kapsul bir pasiyentdir. Rejimləri dəyişib eyni növbədə gözləmə vaxtını müqayisə edin.</p>
+<div class="bar">
+	<div class="seg" role="group" aria-label="Qəbul rejimi">
+		<button id="mAi" aria-pressed="true">TerminalAI</button>
+		<button id="mRec" aria-pressed="false">Resepsiyonist</button>
+	</div>
+<button class="reset" id="reset">Sıfırla</button>
+	</div>
+		<canvas id="c" aria-label="Poliklinika simulyasiyası"></canvas>
+		<div class="stats">
+			<div class="stat ai"><b id="wAi">—</b><span>TerminalAI: orta gözləmə</span></div>
+			<div class="stat rec"><b id="wRec">—</b><span>Resepsiyonist: orta gözləmə</span></div>
+			<div class="stat"><b id="qLen">0</b><span>Növbədə gözləyən</span></div>
+			<div class="stat"><b id="served">0</b><span>Yönləndirilən pasiyent</span></div>
+		</div>
+		<div class="ctl">
+		<label>Gəliş tezliyi <input type="range" id="rate" min="10" max="60" value="30"> <span id="rateV">30 pasiyent/dəq</span></label>
+			<div class="seg" role="group" aria-label="Sürət">
+				<button data-sp="1" aria-pressed="true">1×</button>
+				<button data-sp="2" aria-pressed="false">2×</button>
+				<button data-sp="4" aria-pressed="false">4×</button>
+			</div>
+		</div>
+	</div>
+	<script src="script.js"></script>
+</body>
+</html>
